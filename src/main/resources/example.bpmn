@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1a4gt8m" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Web Modeler" exporterVersion="24d6945" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.0.0" camunda:diagramRelationId="5feba52b-b501-4b77-9ffd-9502ff8f8238" xmlns:camunda="http://camunda.org/schema/1.0/bpmn">
+  <bpmn:collaboration id="Collaboration_0t1vxrh">
+    <bpmn:participant id="template-ticket-booking-participant" name="TicketBooking" processRef="template-ticket-booking"/>
+  </bpmn:collaboration>
+  <bpmn:process id="template-ticket-booking" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0jht9ug</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_1mqmjv4" name="Booking succeeded">
+      <bpmn:incoming>Flow_1aa82hu</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0jht9ug" sourceRef="StartEvent_1" targetRef="Activity_1jb269l"/>
+    <bpmn:sequenceFlow id="Flow_1aa82hu" sourceRef="Activity_1jb269l" targetRef="Event_1mqmjv4"/>
+    <bpmn:serviceTask id="Activity_1jb269l" name="call App1" camunda:type="external" camunda:topic="callApp2">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="callApp1" retries="5" />
+        <zeebe:taskHeaders>
+        <zeebe:header key="method" value="VISA" />
+      </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+<!--      <bpmn:incoming>Flow_0jht9ug</bpmn:incoming>-->
+<!--      <bpmn:outgoing>Flow_1aa82hu</bpmn:outgoing>-->
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmn:message id="Message_04xnjbt" name="msg-payment-received">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=paymentRequestId"/>
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmn:error id="Error_11kp03o" name="ErrorSeatsNotAvailable" errorCode="ErrorSeatsNotAvailable"/>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0t1vxrh">
+      <bpmndi:BPMNShape id="Participant_0yfjoqi_di" bpmnElement="template-ticket-booking-participant" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="1120" height="360"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0jht9ug_di" bpmnElement="Flow_0jht9ug">
+        <di:waypoint x="445" y="267"/>
+        <di:waypoint x="500" y="267"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1aa82hu_di" bpmnElement="Flow_1aa82hu">
+        <di:waypoint x="600" y="267"/>
+        <di:waypoint x="782" y="267"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="409" y="249" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1mqmjv4_di" bpmnElement="Event_1mqmjv4">
+        <dc:Bounds x="782" y="249" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="773" y="292" width="54" height="27"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1n6jx66_di" bpmnElement="Activity_1jb269l">
+        <dc:Bounds x="500" y="227" width="100" height="80"/>
+        <bpmndi:BPMNLabel/>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
